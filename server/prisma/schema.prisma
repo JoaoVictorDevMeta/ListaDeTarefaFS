@@ -1,0 +1,87 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Perfil {
+  id       Int      @id @default(autoincrement())
+  type     String
+
+  Users User[]
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  PerfilId Int
+
+  email    String   @unique
+  name     String
+  password String
+  timezone String @default("America/Sao_Paulo")
+  image_url String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Perfil Perfil @relation(fields: [PerfilId], references: [id])
+  Token Token[]
+  Tasks Task[]
+  Categories Category[]
+}
+
+model Token {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  token     String
+  expiresAt DateTime
+
+  createdAt DateTime @default(now())
+
+  User User @relation(fields: [userId], references: [id])
+}
+
+model Category{
+  id Int @id @default(autoincrement())
+  userId Int
+  name String
+  //the user can choose the color that fits
+  //there is a background design that works with the color 
+  color String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Task Task[]
+  User User @relation(fields: [userId], references: [id])
+}
+
+model Task {
+  id Int @id @default(autoincrement())
+  userId Int
+  categoryId Int
+  
+  title String
+  description String?
+  notes String?
+  status Boolean @default(false)
+  dueDate DateTime // the day of the task
+  //when someone completes the task, the task will be marked as completed
+  //if the tasks is repeatable, this task will not be completed ( expect the repeatTimes is 0)
+  //the task will be updated to the next due date based on the repeatInterval
+  // the next date is (correct DueDate + interval)
+  repeatInterval Int? // in days
+  //times of repeat, 0 means no repeat
+  //null means foverer
+  repeatTimes Int? @default(0) 
+
+  completedAt DateTime? // need to be updated when the task is completed
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User User @relation(fields: [userId], references: [id])
+  Category Category @relation(fields: [categoryId], references: [id])
+}

@@ -1,0 +1,91 @@
+{
+  "profiles": [{ "type": "Admin" }, { "type": "User" }],
+  "users": [
+    {
+      "email": "user1@example.com",
+      "name": "User One",
+      "password": "password1",
+      "image_url": "http://example.com/user1.png",
+      "perfilType": "User"
+    },
+    {
+      "email": "joaovictorgouveiar@gmail.com",
+      "name": "User Two",
+      "password": "password2",
+      "image_url": "http://example.com/user2.png",
+      "perfilType": "Admin"
+    }
+  ],
+  "categories": [
+    { "name": "Trabalho", "color": "#FF5733" },
+    { "name": "Pessoal", "color": "#33FF57" },
+    { "name": "Estudos", "color": "#5733FF" },
+    { "name": "Lazer", "color": "#FF3357" }
+  ],
+  "tasks": [
+    {
+      "userEmail": "user1@example.com",
+      "categoryName": "Trabalho",
+      "title": "Complete project report",
+      "description": "Finish the report by end of the week",
+      "status": false,
+      "dueDate": "2023-10-10T00:00:00.000Z"
+    },
+    {
+      "userEmail": "joaovictorgouveiar@gmail.com",
+      "categoryName": "Pessoal",
+      "title": "Buy groceries",
+      "description": "Milk, Bread, Eggs",
+      "status": false,
+      "dueDate": "2023-10-11T00:00:00.000Z"
+    },
+    {
+      "userEmail": "user1@example.com",
+      "categoryName": "Trabalho",
+      "title": "Prepare presentation",
+      "description": "Prepare slides for the upcoming meeting",
+      "status": false,
+      "dueDate": "2023-10-12T00:00:00.000Z"
+    },
+    {
+      "userEmail": "joaovictorgouveiar@gmail.com",
+      "categoryName": "Pessoal",
+      "title": "Exercise",
+      "description": "Go for a run in the park",
+      "status": false,
+      "dueDate": "2023-10-13T00:00:00.000Z"
+    },
+    {
+      "userEmail": "user1@example.com",
+      "categoryName": "Trabalho",
+      "title": "Team meeting",
+      "description": "Attend the weekly team meeting",
+      "status": false,
+      "dueDate": "2023-10-14T00:00:00.000Z"
+    },
+    {
+      "userEmail": "joaovictorgouveiar@gmail.com",
+      "categoryName": "Pessoal",
+      "title": "Read a book",
+      "description": "Read 'The Great Gatsby'",
+      "status": false,
+      "dueDate": "2023-10-15T00:00:00.000Z"
+    },
+    {
+      "userEmail": "user1@example.com",
+      "categoryName": "Trabalho",
+      "title": "Code review",
+      "description": "Review the code for the new feature",
+      "status": false,
+      "dueDate": "2023-10-16T00:00:00.000Z"
+    },
+    {
+      "userEmail": "joaovictorgouveiar@gmail.com",
+      "categoryName": "Pessoal",
+      "title": "Family dinner",
+      "description": "Have dinner with family",
+      "status": false,
+      "dueDate": "2023-10-17T00:00:00.000Z"
+    }
+  ]
+}
