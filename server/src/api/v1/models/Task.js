@@ -1,4 +1,4 @@
-import prisma from "../../../config/database";
+import prisma from "../../../config/database.js";
 
 async function create({
   title,
@@ -24,7 +24,7 @@ async function create({
   });
 }
 
-async function findById({ id }) {
+async function findById(id) {
   return await prisma.task.findUnique({
     where: {
       id,
@@ -32,7 +32,7 @@ async function findById({ id }) {
   });
 }
 
-async function findAll({ user_id }) {
+async function findAll(user_id) {
   return await prisma.task.findMany({
     where: {
       userId: user_id,

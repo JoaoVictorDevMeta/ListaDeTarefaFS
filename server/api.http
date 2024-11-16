@@ -2,3 +2,13 @@
 
 ### server test
 GET {{baseUrl}}/
+
+### ------------ TASKS -----------
+### All tasks (done & undone)
+GET {{baseUrl}}/api/v1/task/all/1
+
+### All tasks undone
+GET {{baseUrl}}/api/v1/task/todo/1
+
+### All tasks done
+GET {{baseUrl}}/api/v1/task/done/1

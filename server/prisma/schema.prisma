@@ -67,6 +67,7 @@ model Task {
   title String
   description String?
   notes String?
+  // true means its done
   status Boolean @default(false)
   dueDate DateTime // the day of the task
   //when someone completes the task, the task will be marked as completed
@@ -75,6 +76,7 @@ model Task {
   // the next date is (correct DueDate + interval)
   repeatInterval Int? // in days
   //times of repeat, 0 means no repeat
+  //every time the repeat is complete, it decreases one on repeatTimes
   //null means foverer
   repeatTimes Int? @default(0) 
 

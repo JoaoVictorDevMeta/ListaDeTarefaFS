@@ -5,7 +5,7 @@ import config from "../src/config/config.js";
 const prisma = new PrismaClient();
 
 async function main() {
-  const data = JSON.parse(fs.readFileSync("seed.json", "utf-8"));
+  const data = JSON.parse(fs.readFileSync("prisma/seed.json", "utf-8"));
 
   // Create profiles
   const profiles = {};
@@ -33,7 +33,7 @@ async function main() {
     // Create categories
     for (const category of data.categories) {
       categories[category.name] = await prisma.category.create({
-        data: { ...category, userId: users[task.userEmail].id },
+        data: { ...category, userId: users[user.email].id },
       });
     }
   }

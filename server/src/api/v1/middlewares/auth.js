@@ -5,7 +5,7 @@ function isAuthenticated(req, res, next) {
     const { authorization } = req.headers;
 
     if (!authorization) {
-      return res.status(401).send({ auth: false, message: 'No token provided.' });
+      return res.status(401).send({ auth: false, message: 'Nenhum Token enviado' });
     }
 
     const [, token] = authorization.split(' ');
@@ -19,9 +19,9 @@ function isAuthenticated(req, res, next) {
     //this can be useful for refresh token implementation
     //Future Objetives
     if (error.name === 'TokenExpiredError') {
-      return res.status(401).send({ auth: false, message: 'Token expired.' });
+      return res.status(401).send({ auth: false, message: 'Token expirado' });
     }
-    res.status(401).send({ auth: false, message: 'Token invalid.' });
+    res.status(401).send({ auth: false, message: 'Token inválido' });
   }
 }
 

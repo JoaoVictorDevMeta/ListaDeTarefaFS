@@ -12,7 +12,7 @@
     "dev": "node --watch src/app.js"
   },
   "prisma": {
-    "seed": "prisma/seeder.js"
+    "seed": "node prisma/seeder.js"
   },
   "author": "",
   "license": "ISC",
@@ -31,7 +31,8 @@
     "moment-timezone": "^0.5.46",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.16"
+    "nodemailer": "^6.9.16",
+    "todolistv2": "file:"
   },
   "devDependencies": {
     "nodemon": "^3.1.7",
