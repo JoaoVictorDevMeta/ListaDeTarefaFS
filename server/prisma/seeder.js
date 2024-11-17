@@ -1,8 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import fs from "fs";
 import config from "../src/config/config.js";
+import bcrypt from "bcrypt"
 
 const prisma = new PrismaClient();
+const saltRound = Number(process.env.SALT_ROUNDS);
 
 async function main() {
   const data = JSON.parse(fs.readFileSync("prisma/seed.json", "utf-8"));
@@ -19,6 +21,7 @@ async function main() {
   const users = {};
   const categories = {};
   for (const user of data.users) {
+    user.password = await bcrypt.hash(user.password, saltRound)
     users[user.email] = await prisma.user.create({
       data: {
         email: user.email,

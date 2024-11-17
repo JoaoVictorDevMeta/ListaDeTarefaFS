@@ -1,4 +1,4 @@
-import prisma from "../../../config/database";
+import prisma from "../../../config/database.js";
 
 async function create({ perfil, email, name, password, image_url = "" }) {
   return await prisma.user.create({
@@ -12,7 +12,7 @@ async function create({ perfil, email, name, password, image_url = "" }) {
   });
 }
 
-async function findByEmail({ email }) {
+async function findByEmail( email ) {
   return await prisma.user.findUnique({
     where: {
       email,
@@ -20,7 +20,7 @@ async function findByEmail({ email }) {
   });
 }
 
-async function findById({ id }) {
+async function findById( id ) {
   return await prisma.user.findUnique({
     where: {
       id,

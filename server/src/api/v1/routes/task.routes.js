@@ -11,50 +11,76 @@ router.get("/", (req, res) => {
 
 //this part is consult route ---------------------
 //just the user or the admin can view all the tasks
-router.get("/all/:userId", async (req, res) => {
-  const userId = Number(req.params.userId);
-  //the way with auth below
-  //const userId = req.user.id
+router.get("/all", async (req, res, next) => {
   try {
-    const allTasks = await Task.findAll(userId);
+    const allTasks = await Task.findAll(req.userId);
     res.json(allTasks);
   } catch (error) {
     console.log(error);
+    next(error);
   }
 });
 
-router.get("/todo/:userId", async (req, res) => {
-  const userId = Number(req.params.userId);
+router.get("/todo", async (req, res, next) => {
   try {
-    const allTasks = await TaskServices.readAllMODE("todo", userId);
+    const allTasks = await TaskServices.readAllMODE("todo", req.userId);
     res.json(allTasks);
   } catch (error) {
     console.log(error);
+    next(error);
   }
 });
 
-router.get("/done/:userId", async (req, res) => {
-  const userId = Number(req.params.userId);
+router.get("/done", async (req, res, next) => {
   try {
-    const allTasks = await TaskServices.readAllMODE("done", userId);
+    const allTasks = await TaskServices.readAllMODE("done", req.userId);
     res.json(allTasks);
   } catch (error) {
     console.log(error);
+    next(error);
   }
 });
 
-router.get("/repeatable/:userId", async (req, res) => {
-  const userId = Number(req.params.userId);
-  try{
-    const allTasks = await TaskServices.readAllRepeat();
-    res.json(allTasks)
-  }catch(error){
-    console.log(error)
+router.get("/repeatable", async (req, res, next) => {
+  try {
+    const allTasks = await TaskServices.readAllRepeat(req.userId);
+    res.json(allTasks);
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
-})
+});
 
 // this part is writing route -------------------
 
+router.patch("/conclue/:taskId", async (req, res, next) => {
+  const taskId = Number(req.params.taskId);
 
+  try {
+    const existTask = await Task.findById(taskId);
+    if (!existTask || existTask?.userId !== req.userId) {
+      res.status(404).json({ message: "Nenhuma Task encontrada" });
+    }
+
+    if (existTask.status) {
+      res.status(403).json({ message: "Task ja concluída" });
+    }
+
+    if (!existTask.repeatInterval) {
+      const result = await TaskServices.completeTaskWithInterval({
+        taskId,
+        dueDate: existTask.dueDate,
+        repeatInterval: existTask.repeatInterval,
+        repeatTimes: existTask.repeatTimes,
+      });
+      res.json({ sucess: true, message: "Task concluída" });
+    }
+    const result = await TaskServices.completeTaskNoInterval(taskId);
+    res.json({ sucess: true, message: "Task concluída" });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
 
 export default router;

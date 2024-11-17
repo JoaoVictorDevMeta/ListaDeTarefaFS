@@ -1,14 +1,34 @@
 @baseUrl = http://localhost:3000
+@token = {{login.response.body.$.token}}
 
 ### server test
 GET {{baseUrl}}/
 
+### ------------ AUTH ------------
+### Login
+# @name login
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email": "joaovictorgouveiar@gmail.com",
+    "password": "password2"
+}
+
+
 ### ------------ TASKS -----------
 ### All tasks (done & undone)
-GET {{baseUrl}}/api/v1/task/all/1
+GET {{baseUrl}}/api/v1/task/all
+Authorization: bearer {{token}}
 
 ### All tasks undone
-GET {{baseUrl}}/api/v1/task/todo/1
+GET {{baseUrl}}/api/v1/task/todo
+Authorization: bearer {{token}}
 
 ### All tasks done
-GET {{baseUrl}}/api/v1/task/done/1
+GET {{baseUrl}}/api/v1/task/done
+Authorization: bearer {{token}}
+
+### Conclue task (no interval)
+PATCH {{baseUrl}}/api/v1/task/conclue/2
+Authorization: bearer {{token}}

@@ -1,4 +1,4 @@
-import prisma from "../../../config/database";
+import prisma from "../../../config/database.js";
 
 async function create({ name, user_id, color = "#00000" }) {
   return await prisma.category.create({

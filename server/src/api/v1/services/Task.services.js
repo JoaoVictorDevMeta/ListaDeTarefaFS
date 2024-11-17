@@ -1,32 +1,26 @@
 import prisma from "../../../config/database.js";
 import config from "../../../config/config.js";
 
-async function completeTaskNoInterval({ id }) {
+async function completeTaskNoInterval( id ) {
   return await prisma.task.update({
     where: {
       id,
     },
     data: {
-      status: True,
+      status: true,
       completedAt: config.formatDateTime(new Date()),
     },
   });
 }
 
-async function completeTaskWithInterval({ id }) {
-  const task = await prisma.task.findUnique({
-    where: {
-      id,
-    },
-  });
-
+async function completeTaskWithInterval({ id, dueDate, repeatInterval, repeatTimes }) {
   //following the logic of the repeatInterval
   //more on schema.prisma
-  const newDueDate = new Date(task.dueDate);
-  newDueDate.setDate(newDueDate.getDate() + task.repeatInterval * 86400);
+  const newDueDate = new Date(dueDate);
+  newDueDate.setDate(newDueDate.getDate() + repeatInterval * 86400);
   //notice the conditional statement
   //in BD, if the repeatTimes is 0 or null, does not enter the logic of decreasing
-  const newQuant = task.repeatTimes ? task.repeatTimes -1 : task.repeatTimes
+  const newQuant = repeatTimes ? repeatTimes -1 : repeatTimes;
 
   return await prisma.task.update({
     where: {
@@ -37,6 +31,34 @@ async function completeTaskWithInterval({ id }) {
       repeatTimes: newQuant,
       //this means the last completed date
       completedAt: config.formatDateTime(new Date()),
+    },
+  });
+}
+
+async function undoneTaskNoInterval(id) {
+  return await prisma.task.update({
+    where: {
+      id,
+    },
+    data: {
+      status: false,
+    },
+  });
+}
+
+async function undoneTaskWithInterval({ id, dueDate, repeatInterval, repeatTimes }) {
+  const newDueDate = new Date(dueDate);
+  newDueDate.setDate(newDueDate.getDate() - repeatInterval * 86400);
+
+  const newQuant = repeatTimes ? repeatTimes +1 : repeatTimes
+
+  return await prisma.task.update({
+    where: {
+      id,
+    },
+    data: {
+      dueDate: config.formatDateTime(newDueDate),
+      repeatTimes: newQuant,
     },
   });
 }
@@ -62,6 +84,8 @@ async function readAllRepeat(user_id) {
 export default {
   completeTaskNoInterval,
   completeTaskWithInterval,
+  undoneTaskNoInterval,
+  undoneTaskWithInterval,
   readAllMODE,
   readAllRepeat,
 };

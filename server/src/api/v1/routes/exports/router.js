@@ -6,6 +6,9 @@ import profileRoutes from "../profile.routes.js";
 import authRoutes from "../auth.routes.js";
 import adminRoutes from "../admin.routes.js";
 
+//middlewares
+import { isAuthenticated } from "../../middlewares/auth.js";
+
 //---- THIS IS PERSONAL PREFERENCE ----
 //I prefer to export the routes implementation
 //conglomerate them in this file and export it all
@@ -14,7 +17,7 @@ import adminRoutes from "../admin.routes.js";
 export default function serverRoutes(app) {
   //every route implementation
   app.use("/api/v1/user", userRoutes);
-  app.use("/api/v1/task", taskRoutes);
+  app.use("/api/v1/task", isAuthenticated, taskRoutes);
   app.use("/api/v1/category", categoryRoutes);
   app.use("/api/v1/profile", profileRoutes);
   app.use("/api/v1/auth", authRoutes);
