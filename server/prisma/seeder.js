@@ -50,11 +50,29 @@ async function main() {
         title: task.title,
         description: task.description,
         status: task.status,
-        dueDate: config.formatDateTime(new Date(task.dueDate)),
+        nextDate: config.formatDateTime(new Date(task.nextDate)),
         createdAt: config.formatDateTime(new Date()),
         updatedAt: config.formatDateTime(new Date()),
       },
     });
+  }
+
+  for (const intTask of data.intervalTask){
+    await prisma.task.create({
+      data:{
+        userId: users[intTask.userEmail].id,
+        categoryId: categories[intTask.categoryName].id,
+        title: intTask.title,
+        description: intTask.description,
+        status: intTask.status,
+        nextDate: config.formatDateTime(new Date(intTask.nextDate)),
+        nextInterval: intTask.nextInterval,
+        days: intTask.days,
+        repeatTimes: intTask.repeatTimes,
+        createdAt: config.formatDateTime(new Date()),
+        updatedAt: config.formatDateTime(new Date()),
+      }
+    })
   }
 
   console.log("Seeding completed");

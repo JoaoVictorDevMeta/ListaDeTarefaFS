@@ -63,22 +63,19 @@ model Task {
   id Int @id @default(autoincrement())
   userId Int
   categoryId Int
-  
+
   title String
   description String?
   notes String?
   // true means its done
   status Boolean @default(false)
-  dueDate DateTime // the day of the task
-  //when someone completes the task, the task will be marked as completed
+  nextDate DateTime // the day of the task 
+  nextInterval Int?
+  // newDate = (days.indexOf(nextInterval) +1) % days.lenght
+  // newNextDate.setDate(currentDate. getDate() + numberOfDayToAdd )
+  days String? // 1, 2, 4, 5, 6, 7 | Dom, Seg, Qua, Qui, Sex, Sab
   //if the tasks is repeatable, this task will not be completed ( expect the repeatTimes is 0)
-  //the task will be updated to the next due date based on the repeatInterval
-  // the next date is (correct DueDate + interval)
-  repeatInterval Int? // in days
-  //times of repeat, 0 means no repeat
-  //every time the repeat is complete, it decreases one on repeatTimes
-  //null means foverer
-  repeatTimes Int? @default(0) 
+  repeatTimes Int? @default(0)   //times of repeat, 0 means no repeat | null means foverer
 
   completedAt DateTime? // need to be updated when the task is completed
   createdAt DateTime @default(now())
@@ -86,4 +83,5 @@ model Task {
 
   User User @relation(fields: [userId], references: [id])
   Category Category @relation(fields: [categoryId], references: [id])
+
 }

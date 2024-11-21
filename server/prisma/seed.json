@@ -29,7 +29,7 @@
       "title": "Complete project report",
       "description": "Finish the report by end of the week",
       "status": false,
-      "dueDate": "2023-10-10T00:00:00.000Z"
+      "nextDate": "2023-10-10T00:00:00.000Z"
     },
     {
       "userEmail": "joaovictorgouveiar@gmail.com",
@@ -37,7 +37,7 @@
       "title": "Buy groceries",
       "description": "Milk, Bread, Eggs",
       "status": false,
-      "dueDate": "2023-10-11T00:00:00.000Z"
+      "nextDate": "2023-10-11T00:00:00.000Z"
     },
     {
       "userEmail": "user1@example.com",
@@ -45,7 +45,7 @@
       "title": "Prepare presentation",
       "description": "Prepare slides for the upcoming meeting",
       "status": false,
-      "dueDate": "2023-10-12T00:00:00.000Z"
+      "nextDate": "2023-10-12T00:00:00.000Z"
     },
     {
       "userEmail": "joaovictorgouveiar@gmail.com",
@@ -53,7 +53,7 @@
       "title": "Exercise",
       "description": "Go for a run in the park",
       "status": false,
-      "dueDate": "2023-10-13T00:00:00.000Z"
+      "nextDate": "2023-10-13T00:00:00.000Z"
     },
     {
       "userEmail": "user1@example.com",
@@ -61,7 +61,7 @@
       "title": "Team meeting",
       "description": "Attend the weekly team meeting",
       "status": false,
-      "dueDate": "2023-10-14T00:00:00.000Z"
+      "nextDate": "2023-10-14T00:00:00.000Z"
     },
     {
       "userEmail": "joaovictorgouveiar@gmail.com",
@@ -69,7 +69,7 @@
       "title": "Read a book",
       "description": "Read 'The Great Gatsby'",
       "status": false,
-      "dueDate": "2023-10-15T00:00:00.000Z"
+      "nextDate": "2023-10-15T00:00:00.000Z"
     },
     {
       "userEmail": "user1@example.com",
@@ -77,7 +77,7 @@
       "title": "Code review",
       "description": "Review the code for the new feature",
       "status": false,
-      "dueDate": "2023-10-16T00:00:00.000Z"
+      "nextDate": "2023-10-16T00:00:00.000Z"
     },
     {
       "userEmail": "joaovictorgouveiar@gmail.com",
@@ -85,7 +85,21 @@
       "title": "Family dinner",
       "description": "Have dinner with family",
       "status": false,
-      "dueDate": "2023-10-17T00:00:00.000Z"
+      "nextDate": "2023-10-17T00:00:00.000Z"
+    }
+  ],
+  "intervalTask": [
+    {
+      "userEmail": "joaovictorgouveiar@gmail.com",
+      "categoryName": "Pessoal",
+
+      "title": "Family dinner",
+      "description": "Have dinner with family",
+      "status": false,
+      "nextDate": "2024-12-17T00:00:00.000Z",
+      "nextInterval": 3,
+      "days": "1 2 3 7",
+      "repeatTimes": 10
     }
   ]
 }

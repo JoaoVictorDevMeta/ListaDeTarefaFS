@@ -68,15 +68,16 @@ router.patch("/conclue/:taskId", async (req, res, next) => {
 
     if (!existTask.repeatInterval) {
       const result = await TaskServices.completeTaskWithInterval({
-        taskId,
-        dueDate: existTask.dueDate,
-        repeatInterval: existTask.repeatInterval,
+        taskId, 
+        nextDate : existTask.nextDate,
+        nextInterval : existTask.nextInterval, 
+        days: existTask.days, 
         repeatTimes: existTask.repeatTimes,
-      });
-      res.json({ sucess: true, message: "Task concluída" });
+      })
+      return res.json({ sucess: true, message: "Task concluída" });
     }
     const result = await TaskServices.completeTaskNoInterval(taskId);
-    res.json({ sucess: true, message: "Task concluída" });
+    return res.json({ sucess: true, message: "Task concluída" });
   } catch (error) {
     console.log(error);
     next(error);

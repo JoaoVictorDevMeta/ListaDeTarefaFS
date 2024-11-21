@@ -13,11 +13,22 @@ async function completeTaskNoInterval( id ) {
   });
 }
 
-async function completeTaskWithInterval({ id, dueDate, repeatInterval, repeatTimes }) {
-  //following the logic of the repeatInterval
-  //more on schema.prisma
-  const newDueDate = new Date(dueDate);
-  newDueDate.setDate(newDueDate.getDate() + repeatInterval * 86400);
+async function completeTaskWithInterval({ id, nextDate, nextInterval, days, repeatTimes }) {
+  if( repeatTimes === 0 ){ //last complete
+    return await prisma.task.update({
+      where: {
+        id,
+      },
+      data: {
+        status: true,
+        completedAt: config.formatDateTime(new Date()),
+      },
+    });
+  }
+
+  const weekDays = days.split(" "); //convert to treatment
+  const newDate = (nextInterval +1)%(weekDays.length);
+  nextDate.setDate(nextDate.getDate() + newDate)
   //notice the conditional statement
   //in BD, if the repeatTimes is 0 or null, does not enter the logic of decreasing
   const newQuant = repeatTimes ? repeatTimes -1 : repeatTimes;
@@ -27,7 +38,8 @@ async function completeTaskWithInterval({ id, dueDate, repeatInterval, repeatTim
       id,
     },
     data: {
-      dueDate: config.formatDateTime(newDueDate),
+      nextDate: nextDate,
+      nextInterval: newDate,
       repeatTimes: newQuant,
       //this means the last completed date
       completedAt: config.formatDateTime(new Date()),
