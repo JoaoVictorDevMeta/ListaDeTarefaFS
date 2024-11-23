@@ -68,7 +68,7 @@ async function update({
   });
 }
 
-async function remove({ id }) {
+async function remove( id ) {
   return await prisma.task.delete({
     where: {
       id,
