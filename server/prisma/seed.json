@@ -90,7 +90,7 @@
   ],
   "intervalTask": [
     {
-      "userEmail": "joaovictorgouveiar@gmail.com",
+      "userEmail": "user1@example.com",
       "categoryName": "Pessoal",
 
       "title": "Family dinner",
@@ -100,6 +100,18 @@
       "nextInterval": 3,
       "days": "1 2 3 7",
       "repeatTimes": 10
+    },
+    {
+      "userEmail": "user1@example.com",
+      "categoryName": "Pessoal",
+
+      "title": "Go to the gym",
+      "description": "Go to workout at Night",
+      "status": false,
+      "nextDate": "2024-12-17T00:18:00.000Z",
+      "nextInterval": 2,
+      "days": "2 3 4 5 6",
+      "repeatTimes": null
     }
   ]
 }

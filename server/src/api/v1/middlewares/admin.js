@@ -1,4 +1,4 @@
-import User from "../models/User";
+import User from "../models/User.js";
 
 async function isAdmin(req, res, next) {
   const userId = req.userId;

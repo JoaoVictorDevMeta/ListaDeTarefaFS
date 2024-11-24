@@ -1,4 +1,4 @@
-/*import { server } from "../src/app";
+import server from "../src/app";
 import supertest from "supertest";
 
 describe("GET /api/v1/admin", () => {
@@ -10,7 +10,7 @@ describe("GET /api/v1/admin", () => {
 
             expect(response.status).toEqual(401);
         });
-    });
+    });*/
 
     describe("when the user is an admin", () => {
         test("all users are returned", async () => {
@@ -37,12 +37,12 @@ describe("GET /api/v1/admin", () => {
             expect(response.status).toBe(404);
         })
 
-        test("It should delete the task with the id on the params", async () => {
+        /*test("It should delete the task with the id on the params", async () => {
             const taskId = 1
             const response = await supertest(server)
                 .delete(`/api/v1/admin/delete/task/${taskId}`)
                 .set("Authorization", ""); //add token here
             expect(response.status).toBe(204);
-        })
+        })*/
     });
-})*/
+})

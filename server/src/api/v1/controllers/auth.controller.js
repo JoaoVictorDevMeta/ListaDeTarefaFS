@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { JWT } from "../../../config/constants.js";
 
 export async function login(req, res) {
   const { email, password } = req.body;
@@ -21,7 +22,7 @@ export async function login(req, res) {
     const userId = dbUser.id
     const token = jwt.sign(
       { userId }, 
-      process.env.JWT_SECRET, 
+      JWT, 
       {expiresIn: 3600000,}
     );
     res.json({ token, validUser, auth: true });

@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { JWT } from '../../../config/constants.js';
 
 function isAuthenticated(req, res, next) {
   try {
@@ -10,7 +11,7 @@ function isAuthenticated(req, res, next) {
 
     const [, token] = authorization.split(' ');
 
-    const { userId } = jwt.verify(token, process.env.JWT_SECRET);
+    const { userId } = jwt.verify(token, JWT);
 
     req.userId = userId;
 

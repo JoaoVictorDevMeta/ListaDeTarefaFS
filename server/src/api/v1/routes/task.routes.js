@@ -21,6 +21,20 @@ router.get("/all", async (req, res, next) => {
   }
 });
 
+router.get("/select/:taskId", async (req, res, next) => {
+  const taskId = Number(req.params.taskId);
+  try {
+    const task = await Task.findById(taskId);
+    if (!task || task.userId !== req.userId) {
+      return res.status(404).json({ message: "Nenhuma Task encontrada" });
+    }
+    res.json(task);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
 router.get("/todo", async (req, res, next) => {
   try {
     const allTasks = await TaskServices.readAllMODE("todo", req.userId);
@@ -59,25 +73,28 @@ router.patch("/conclue/:taskId", async (req, res, next) => {
   try {
     const existTask = await Task.findById(taskId);
     if (!existTask || existTask?.userId !== req.userId) {
-      res.status(404).json({ message: "Nenhuma Task encontrada" });
+      return res.status(404).json({ message: "Nenhuma Task encontrada" });
     }
 
     if (existTask.status) {
-      res.status(403).json({ message: "Task ja concluída" });
+      return res.status(403).json({ message: "Task ja concluída" });
     }
 
-    if (!existTask.repeatInterval) {
-      const result = await TaskServices.completeTaskWithInterval({
-        taskId, 
-        nextDate : existTask.nextDate,
-        nextInterval : existTask.nextInterval, 
+    let task;
+    if (existTask.days) {
+      task = await TaskServices.completeTaskWithInterval({
+        id: taskId, 
+        nextDate: existTask.nextDate,
+        nextInterval: existTask.nextInterval, 
         days: existTask.days, 
         repeatTimes: existTask.repeatTimes,
-      })
-      return res.json({ sucess: true, message: "Task concluída" });
+      });
+
+      return res.status(200).json({ message: "Task concluída com sucesso", task });
     }
-    const result = await TaskServices.completeTaskNoInterval(taskId);
-    return res.json({ sucess: true, message: "Task concluída" });
+    
+    task = await TaskServices.completeTaskNoInterval(taskId);
+    return res.status(200).json({ message: "Task concluída com sucesso", task });
   } catch (error) {
     console.log(error);
     next(error);

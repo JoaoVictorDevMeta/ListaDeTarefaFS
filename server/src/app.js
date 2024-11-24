@@ -10,7 +10,6 @@ import "dotenv/config";
 import serverRoutes from "./api/v1/routes/exports/router.js";
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.use(morgan("dev"));
 app.use(cors());
@@ -27,7 +26,7 @@ app.get("/", (req, res) => {
 //notice that all routes are prefixed with /api/v1
 serverRoutes(app);
 
-if (process.env.MODE === "development") {
+if (process.env.NODE_ENV === "development") {
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render("error", {
@@ -47,8 +46,4 @@ app.use(function(err, req, res, next) {
     });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
-
-export const server = app;
+export default app;

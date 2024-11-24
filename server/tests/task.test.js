@@ -1,4 +1,4 @@
-import { server } from "../src/app";
+import server from "../src/app";
 import supertest from "supertest";
 
 describe("GET /api/v1/task", () => {
@@ -20,11 +20,36 @@ describe("GET /api/v1/task", () => {
                 .set("Authorization", token)
                 .send({
                     email: "user1@example.com",
-                    password: "password123"
+                    password: "password1"
                 });
             expect(response.status).toBe(200);
             token = response.body.token;
-            console.log(token);
         });
+
+        test("It should return all tasks", async () => {
+            const response = await supertest(server)
+                .get("/api/v1/task/all")
+                .set("Authorization", `Bearer ${token}`);
+            expect(response.status).toBe(200);
+        });
+
+        test("It shuold return success for a normal task", async () => {
+            const taskId=1;
+            
+            const response = await supertest(server)
+                .patch(`/api/v1/task/conclue/${taskId}`)
+                .set("Authorization", `Bearer ${token}`)
+            expect(response.status).toBe(204);
+        })
+
+        test("It should return sucess for a repeatable task", async () => {
+            const taskId=8;
+            
+            const response = await supertest(server)
+                .patch(`/api/v1/task/conclue/${taskId}`)
+                .set("Authorization", `Bearer ${token}`)
+            console.log(response.body)
+            expect(response.status).toBe(204);
+        })
     });
 });
