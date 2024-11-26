@@ -3,7 +3,7 @@ import prisma from "../../../config/database.js";
 async function create({ perfil, email, name, password, image_url = "" }) {
   return await prisma.user.create({
     data: {
-      perfil,
+      PerfilId: perfil,
       email,
       name,
       password,
