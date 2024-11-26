@@ -48,10 +48,19 @@ async function update({ id, email, name, password, image_url }) {
   });
 }
 
+async function remove( id ) {
+  return await prisma.user.delete({
+    where: {
+      id,
+    },
+  });
+}
+
 export default {
   create,
   findByEmail,
   findById,
   findAll,
   update,
+  remove,
 };

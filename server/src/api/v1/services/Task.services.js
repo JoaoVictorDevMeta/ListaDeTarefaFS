@@ -33,6 +33,7 @@ async function completeTaskWithInterval({
       });
   }
 
+  //this part is more about converting data 
   const weekDays = days.split(" ").map(Number); // Convert to array of numbers
   const currentDayIndex = weekDays.indexOf(nextInterval);
   const nextDayIndex = (currentDayIndex + 1) % weekDays.length;
@@ -41,6 +42,7 @@ async function completeTaskWithInterval({
   const currentDate = new Date(nextDate);
   const currentDayOfWeek = currentDate.getDay() + 1; // getDay() returns 0-6, add 1 to match 1-7
 
+  //here the logic goes
   let daysToAdd;
   if (nextDay > currentDayOfWeek) {
       daysToAdd = nextDay - currentDayOfWeek;

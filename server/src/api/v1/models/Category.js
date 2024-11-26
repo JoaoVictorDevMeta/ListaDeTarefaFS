@@ -10,10 +10,23 @@ async function create({ name, user_id, color = "#00000" }) {
   });
 }
 
-async function findById({ id }) {
+async function findByName({name, user_id}) {
+  return await prisma.category.findUnique({
+    where: {
+      name,
+      userId: user_id,
+    },
+    select: {
+      id: true,
+    },
+  });
+}
+
+async function findById({id, user_id}) {
   return await prisma.category.findUnique({
     where: {
       id,
+      userId: user_id,
     },
   });
 }
@@ -51,6 +64,7 @@ async function remove({ id }) {
 export default {
   create,
   findById,
+  findByName,
   findAll,
   update,
   remove,

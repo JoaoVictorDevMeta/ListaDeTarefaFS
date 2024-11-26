@@ -1,7 +1,6 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import cookieParser from "cookie-parser";
 import "dotenv/config";
 
 //routes
@@ -14,8 +13,8 @@ const app = express();
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
+app.set("view engine", "html");
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 //test server route
 app.get("/", (req, res) => {
@@ -26,23 +25,14 @@ app.get("/", (req, res) => {
 //notice that all routes are prefixed with /api/v1
 serverRoutes(app);
 
-if (process.env.NODE_ENV === "development") {
-  app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
-    res.render("error", {
-      message: err.message,
-      error: err,
-    });
-  });
-}
+app.use( ( error, req, res, next ) => {
+	const statusCode = error.statusCode || 500;
+    const message = error.message || 'Internal Server Error';
 
-// production error handler
-// no information send to the user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: {}
+    return res.status(statusCode).json({
+        success: false,
+        message,
+        statusCode,
     });
 });
 

@@ -1,29 +1,5 @@
 import prisma from "../../../config/database.js";
 
-async function create({
-  title,
-  description,
-  repeatInterval,
-  repeatTimes,
-  notes = "",
-  dueDate,
-  user_id,
-  category_id,
-}) {
-  return await prisma.task.create({
-    data: {
-      title: title,
-      description: description,
-      notes: notes,
-      dueDate: dueDate,
-      userId: user_id,
-      categoryId: category_id,
-      ...(repeatInterval ? { repeatInterval: repeatInterval } : {}),
-      ...(repeatTimes ? { repeatTimes: repeatTimes } : {}),
-    },
-  });
-}
-
 async function findById(id) {
   return await prisma.task.findUnique({
     where: {
@@ -40,31 +16,21 @@ async function findAll(user_id) {
   });
 }
 
-async function update({
-  id,
-  title,
-  description,
-  repeatInterval,
-  repeatTimes,
-  notes,
-  dueDate,
-  category_id,
-}) {
-  const updateData = {};
-
-  if (title !== undefined) updateData.title = title;
-  if (description !== undefined) updateData.description = description;
-  if (repeatInterval !== undefined) updateData.repeatInterval = repeatInterval;
-  if (repeatTimes !== undefined) updateData.repeatTimes = repeatTimes;
-  if (notes !== undefined) updateData.notes = notes;
-  if (dueDate !== undefined) updateData.dueDate = dueDate;
-  if (category_id !== undefined) updateData.categoryId = category_id;
-
+async function update({data, id}) {
   return await prisma.task.update({
     where: {
       id,
     },
-    data: updateData,
+    data,
+  });
+}
+
+async function create({data, user_id}) {
+  return await prisma.task.create({
+    data: {
+      ...data,
+      userId: user_id,
+    },
   });
 }
 
@@ -77,8 +43,8 @@ async function remove( id ) {
 }
 
 export default {
-  create,
   findById,
+  create,
   findAll,
   update,
   remove,

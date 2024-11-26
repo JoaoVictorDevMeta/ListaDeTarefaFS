@@ -43,4 +43,17 @@ async function deleteTask(req, res, next) {
   }
 }
 
-export default { getUsers, getTasksFromUser, deleteTask };
+async function deleteUser(req, res, next) {
+  try{
+    const userId = Number(req.params.id);
+    if (!userId) return res.status(400).json({ message: "Id inválido" });
+
+    await User.remove(userId);
+    res.status(204).json({ message: "Usuário deletado com sucesso" });
+  }catch(error) {
+    console.log(error);
+    next(error);
+  }
+}
+
+export default { getUsers, getTasksFromUser, deleteTask, deleteUser };
