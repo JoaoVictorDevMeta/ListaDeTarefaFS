@@ -1,11 +1,17 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useLocation } from "react-router";
+
+//data logic
+import useAuth from "../../data/hooks/auth";
 import { LoginInputs } from "../../data/types/loginType";
 import { RegisterInputs } from "../../data/types/registerType";
+
+//styles and components
 import LoadingSpinner from "../../ui/components/loading/Loading";
+import Button from "../../ui/components/buttons/Button";
 import "./style.scss";
 
-import useLogin from "../../data/hooks/auth";
 
 function Page() {
 	const {
@@ -18,15 +24,21 @@ function Page() {
 		handleSubmit: handleSubmitRegister,
 		formState: { errors: registerErrors },
 	} = useForm<RegisterInputs>();
-	const [isLogin, setIsLogin] = useState(true);
-	const { login, loading: loginLoading } = useLogin();
+	//form type auth
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
+	const formType = queryParams.get("form") || "login";
+	const [isLogin, setIsLogin] = useState(formType === "login");
+
+	const { login, loading: loginLoading } = useAuth.useLogin();
+	const { register, loading: registerLoading } = useAuth.useRegister();
 
 	const onSubmitLogin: SubmitHandler<LoginInputs> = (data) => {
 		login(data);
 	};
 
 	const onSubmitRegister: SubmitHandler<RegisterInputs> = (data) => {
-		console.log("Register Data:", data);
+		register(data);
 	};
 
 	return (
@@ -36,7 +48,7 @@ function Page() {
 					isLogin ? "register-active" : "login-active"
 				}`}
 			>
-				{loginLoading &&  <LoadingSpinner/>}
+				{(loginLoading || registerLoading) && <LoadingSpinner />}
 				<section className="login-form">
 					<form onSubmit={handleSubmitLogin(onSubmitLogin)}>
 						<h2>Login</h2>
@@ -64,13 +76,12 @@ function Page() {
 								<span>Senha é obrigatória</span>
 							)}
 						</div>
-						<button
-							type="submit"
-							className="btn-fill"
+						<Button
+							label="Login"
+							type="fill"
+							color="light"
 							disabled={loginLoading}
-						>
-							Login
-						</button>
+						/>
 						<p>
 							Não tem conta ainda?{" "}
 							<span
@@ -137,9 +148,12 @@ function Page() {
 								<span>{registerErrors.password.message}</span>
 							)}
 						</div>
-						<button type="submit" className="btn-fill">
-							Register
-						</button>
+						<Button
+							label="Registrar"
+							type="fill"
+							color="light"
+							disabled={registerLoading}
+						/>
 						<p>
 							Ja possui uma conta?{" "}
 							<span

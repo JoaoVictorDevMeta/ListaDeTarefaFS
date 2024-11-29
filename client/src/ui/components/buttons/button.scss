@@ -1,0 +1,29 @@
+.btn-fill {
+	min-width: 225px;
+	width: 70%;
+	height: 50px;
+	border: none;
+	border-radius: 5px;
+	font-size: 18px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.btn-light{
+    background-color: var(--color-secondary);
+    color: white;
+
+    &:hover {
+		background-color: #2d528f;
+	}
+}
+
+.btn-dark{
+    background-color: white;
+    color: var(--color-secondary);
+
+    &:hover {
+        background-color: #f1f1f1;
+    }
+}
