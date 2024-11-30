@@ -30,6 +30,19 @@ main{
 .app-container{
   border-radius: 15px;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: white;
+}
+ul{
+  list-style: none;
+  padding: 0;
+}
+a{
+  text-decoration: none;
+  color: var(--dark-color);
+}
+svg {
+  width: 1em;
+  height: 1em;
+  font-size: 1.6rem;
 }

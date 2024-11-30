@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 
 //pages
 import AuthPage from "./pages/Auth/Page";
@@ -13,61 +8,68 @@ import CategoriesPage from "./pages/Categories/Page";
 import TaskPage from "./pages/Task/Page";
 import PostPage from "./pages/Task/Page";
 
+//components
+import Layout from "./ui/partials/Layout";
+
 //data
 import { isAuthenticated } from "./context/auth/authenticate";
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
-  return isAuthenticated() ? children : <Navigate to="/auth" />;
+	return isAuthenticated() ? (
+		<Layout>{children}</Layout>
+	) : (
+		<Navigate to="/auth" />
+	);
 }
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/auth" element={<AuthPage />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/calendar"
-          element={
-            <ProtectedRoute>
-              <CalendarPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/categories"
-          element={
-            <ProtectedRoute>
-              <CategoriesPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/post"
-          element={
-            <ProtectedRoute>
-              <PostPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/singleTask"
-          element={
-            <ProtectedRoute>
-              <TaskPage />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </Router>
-  );
+	return (
+		<Router>
+			<Routes>
+				<Route path="/auth" element={<AuthPage />} />
+				<Route
+					path="/"
+					element={
+						<ProtectedRoute>
+							<HomePage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/calendar"
+					element={
+						<ProtectedRoute>
+							<CalendarPage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/categories"
+					element={
+						<ProtectedRoute>
+							<CategoriesPage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/post"
+					element={
+						<ProtectedRoute>
+							<PostPage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/singleTask"
+					element={
+						<ProtectedRoute>
+							<TaskPage />
+						</ProtectedRoute>
+					}
+				/>
+			</Routes>
+		</Router>
+	);
 }
 
 export default App;
