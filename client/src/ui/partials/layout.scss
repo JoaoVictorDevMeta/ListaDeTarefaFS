@@ -23,11 +23,20 @@ main {
 	overflow: hidden;
 	height: 100%;
 	flex: 1 1 0%;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+
 	.main-section-header {
+		position: relative;
+		display: flex;
+		width: 100%;
 		min-height: 90px;
 	}
 	section {
-		height: 100%;
+		top: 0;
+		width: 100%;
+		overflow: auto;
 	}
 }
 
@@ -112,8 +121,8 @@ main {
 			display: flex;
 			justify-content: center;
 			flex-direction: column;
-            align-items: center;
-            padding: 10px;
+			align-items: center;
+			padding: 10px;
 
 			p {
 				white-space: nowrap;
@@ -122,11 +131,11 @@ main {
 				overflow: hidden;
 				transition: 0.2s;
 			}
-            
-            button{
-                opacity: 0;
-                margin-bottom: 20px;
-            }
+
+			button {
+				opacity: 0;
+				margin-bottom: 20px;
+			}
 		}
 	}
 }
@@ -144,9 +153,9 @@ main {
 			p {
 				width: 100%;
 			}
-            button{
-                opacity: 1;
-            }
+			button {
+				opacity: 1;
+			}
 		}
 	}
 }

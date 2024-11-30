@@ -1,0 +1,16 @@
+export interface Task {
+    id: number;
+    userId: number;
+    categoryId: number;
+    title: string;
+    description: string;
+    notes: string | null;
+    status: boolean;
+    nextDate: string;
+    nextInterval: number | null;
+    days: string | null;
+    repeatTimes: number | null;
+    completedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+  }

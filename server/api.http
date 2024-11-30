@@ -11,8 +11,8 @@ POST {{baseUrl}}/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email": "user1@example.com",
-    "password": "password1"
+    "email": "joaovictorgouveiar@gmail.com",
+    "password": "password2"
 }
 
 ### Register
@@ -43,7 +43,7 @@ GET {{baseUrl}}/api/v1/task/select/9
 Authorization: bearer {{token}}
 
 ### Conclue task
-PATCH {{baseUrl}}/api/v1/task/conclue/12
+PATCH {{baseUrl}}/api/v1/task/conclue/2
 Authorization: bearer {{token}}
 
 ### Create Task

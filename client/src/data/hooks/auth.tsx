@@ -19,7 +19,7 @@ function useLogin() {
 				throw new Error(respData.message);
 			}
 			localStorage.setItem("token", respData.token);
-			localStorage.setItem("user", JSON.stringify(respData.user));
+			localStorage.setItem("user", JSON.stringify(respData.validUser));
 			Swal.fire({
 				icon: "success",
 				title: "Login efetuado com sucesso",

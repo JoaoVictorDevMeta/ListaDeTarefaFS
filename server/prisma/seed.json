@@ -10,7 +10,7 @@
     },
     {
       "email": "joaovictorgouveiar@gmail.com",
-      "name": "User Two",
+      "name": "João Victor",
       "password": "password2",
       "image_url": "http://example.com/user2.png",
       "perfilType": "Admin"

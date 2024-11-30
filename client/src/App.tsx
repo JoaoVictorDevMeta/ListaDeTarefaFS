@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router";
 
 //pages
 import AuthPage from "./pages/Auth/Page";
@@ -8,19 +8,8 @@ import CategoriesPage from "./pages/Categories/Page";
 import TaskPage from "./pages/Task/Page";
 import PostPage from "./pages/Task/Page";
 
-//components
-import Layout from "./ui/partials/Layout";
-
-//data
-import { isAuthenticated } from "./context/auth/authenticate";
-
-function ProtectedRoute({ children }: { children: JSX.Element }) {
-	return isAuthenticated() ? (
-		<Layout>{children}</Layout>
-	) : (
-		<Navigate to="/auth" />
-	);
-}
+//auth control
+import ProtectedRoute from "./data/hooks/protectRoute";
 
 function App() {
 	return (

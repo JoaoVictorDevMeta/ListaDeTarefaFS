@@ -1,0 +1,95 @@
+.dashboard-header {
+	background-color: #254e91;
+	color: white;
+	padding: 20px;
+	height: 170px;
+	border-radius: 15px;
+	font-family: var(--redhat);
+}
+.dashboard-section {
+	display: flex;
+	margin-top: 20px;
+	gap: 20px;
+
+	.dashboard-card {
+		flex: 1;
+		min-height: 300px;
+		border-radius: 15px;
+		padding: 20px;
+		box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+
+		h4 {
+			font-family: var(--DMsans);
+			color: var(--dark-color);
+			font-weight: 600;
+			font-size: 18px;
+		}
+	}
+}
+.card-large {
+	min-width: 500px;
+}
+.card-medium {
+	min-width: 300px;
+}
+
+@media (max-width: 991.98px) {
+	.card-large {
+		min-width: 0px;
+		width: 100%;
+	}
+	.dashboard-section {
+		flex-direction: column;
+	}
+}
+
+.task-small {
+	display: flex;
+	padding: 13px 20px;
+	align-items: center;
+	border: 1px solid var(--color-secondary);
+	border-radius: 10px;
+
+	label {
+		flex: 0.5;
+		margin-right: 7px;
+	}
+	h5 {
+		flex: 3.5;
+		margin: 0;
+		font-size: 16px;
+		font-weight: 700;
+		a{
+			color: black;
+			font-family: var(--redhat);
+		}
+	}
+	p {
+		flex: 2;
+		margin: 0;
+		padding: 0;
+		font-size: 16px;
+		font-weight: 500;
+		opacity: 0.7;
+		font-family: var(--redhat);
+	}
+	.category-link{
+		flex: 2;
+		background: #ec5948;
+		border-radius: 5px;
+		height: 32px;
+		/* padding: 5px 10px; */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: white;
+		font-family: "Red Hat Display";
+		font-weight: 700;
+		letter-spacing: 1.2px;
+		min-width: 110px;
+	}
+
+	&:not(:last-child) {
+		margin-bottom: 10px;
+	}
+}
