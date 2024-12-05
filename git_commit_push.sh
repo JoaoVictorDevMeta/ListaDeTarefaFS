@@ -14,4 +14,4 @@ github_username=$GITHUB_USERNAME
 github_token=$GITHUB_TOKEN
 
 # Push the changes
-git push https://$github_username:$github_password@github.com/JoaoVictorDevMeta/ListaTarefa-P1.git
+git push https://$github_username:$github_token@github.com/JoaoVictorDevMeta/ListaTarefa-P1.git
