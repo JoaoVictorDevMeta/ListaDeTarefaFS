@@ -12,4 +12,4 @@ github_username='JoaoVictorDevMeta'
 github_token='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'
 
 # Push the changes
-git push https://$github_username:$github_token@github.com/JoaoVictorDevMeta/ListaTarefa-P1.git
+git push https://$github_username:$github_token@github.com/JoaoVictorDevMeta/ListaDeTarefaFS.git
