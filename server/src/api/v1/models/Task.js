@@ -5,6 +5,9 @@ async function findById(id) {
     where: {
       id,
     },
+    include: {
+      Category: true,
+    },
   });
 }
 
@@ -12,6 +15,9 @@ async function findAll(user_id) {
   return await prisma.task.findMany({
     where: {
       userId: user_id,
+    },
+    include: {
+      Category: true,
     },
   });
 }

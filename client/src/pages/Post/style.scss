@@ -1,0 +1,90 @@
+.post-container {
+	.postzin {
+		flex: 1;
+		margin: 20px;
+		border-right: 1px solid;
+		padding-right: 20px;
+	}
+	.other {
+		flex: 1;
+		margin: 20px 20px 20px 0px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.date-container {
+		flex-direction: row;
+		gap: 20px;
+		width: 100%;
+		justify-content: space-around;
+		.date-input {
+			display: flex;
+			flex-direction: column;
+			input {
+				font-size: 14px;
+				height: 33px;
+			}
+			&:first-child {
+				width: 100%;
+				max-width: 250px;
+			}
+		}
+	}
+	.input-container {
+		width: 100%;
+		input {
+			border: 1px solid var(--dark-color);
+			background: none;
+		}
+		textarea {
+			height: 113px;
+			resize: none;
+			padding: 5px;
+			border-radius: 5px;
+			border: 1px solid var(--dark-color);
+		}
+		.week-days {
+			display: flex;
+			justify-content: center;
+			gap: 14px;
+			padding: 15px 0px;
+		}
+	}
+	.post-form {
+		h4 {
+			font-family: var(--DMsans);
+			font-weight: 500;
+			font-size: 18px;
+			color: var(--dark-color);
+		}
+	}
+}
+
+.hidden {
+	display: none;
+}
+
+#notes {
+	height: 150px;
+}
+
+.switch-toggler {
+	border-radius: 5px;
+	overflow: hidden;
+	width: fit-content;
+	border: 1px solid var(--dark-color);
+	button {
+		background: #f6f6f6;
+		border: none;
+		padding: 7px 32px;
+		transition: 0.2s;
+		&:disabled {
+			background-color: var(--color-secondary);
+			color: white;
+		}
+	}
+	button:not(:disabled):hover {
+		background-color: aliceblue;
+	}
+}

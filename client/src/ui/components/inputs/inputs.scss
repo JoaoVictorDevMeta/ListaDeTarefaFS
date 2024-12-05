@@ -1,0 +1,26 @@
+.date-input {
+	div {
+		display: flex;
+		flex-direction: column;
+        transition: 0.2s;
+
+		&:first-child {
+			display: flex;
+			flex-direction: column;
+			background: white;
+			position: relative;
+			z-index: 1;
+			padding: 10px 0px;
+		}
+        &:last-child{
+            transform: translateY(-80px);
+        }
+	}
+}
+.has-value{
+    div{
+        &:last-child{
+            transform: translateY(0px) !important;
+        }
+    }
+}

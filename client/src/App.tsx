@@ -6,7 +6,7 @@ import HomePage from "./pages/Home/Page";
 import CalendarPage from "./pages/Calendar/Page";
 import CategoriesPage from "./pages/Categories/Page";
 import TaskPage from "./pages/Task/Page";
-import PostPage from "./pages/Task/Page";
+import PostPage from "./pages/Post/Page";
 
 //auth control
 import ProtectedRoute from "./data/hooks/protectRoute";

@@ -49,6 +49,7 @@
 	align-items: center;
 	border: 1px solid var(--color-secondary);
 	border-radius: 10px;
+	position: relative;
 
 	label {
 		flex: 0.5;
@@ -59,9 +60,17 @@
 		margin: 0;
 		font-size: 16px;
 		font-weight: 700;
-		a{
+		a {
 			color: black;
 			font-family: var(--redhat);
+		}
+		span {
+			display: block;
+			margin-top: -2px;
+			position: absolute;
+			font-size: 14px;
+			font-weight: 400;
+			color: red;
 		}
 	}
 	p {
@@ -73,7 +82,7 @@
 		opacity: 0.7;
 		font-family: var(--redhat);
 	}
-	.category-link{
+	.category-link {
 		flex: 2;
 		background: #ec5948;
 		border-radius: 5px;

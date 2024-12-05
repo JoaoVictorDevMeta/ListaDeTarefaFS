@@ -23,7 +23,7 @@ export async function login(req, res) {
     const token = jwt.sign(
       { userId }, 
       JWT, 
-      {expiresIn: 3600000,}
+      {expiresIn: '1h',}
     );
     res.json({ token, validUser, auth: true });
   } catch (error) {

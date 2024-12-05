@@ -28,6 +28,8 @@ const CardList = ({ tasks, loading }: CardListProps) => {
 					title={task.title}
 					nextDate={task.nextDate}
 					status={task.status}
+                    categoryName={task.Category.name}
+                    categoryColor={task.Category.color}
 				/>
 			)) : <p>Nenhuma tarefa próxima</p>}
 		</ul>

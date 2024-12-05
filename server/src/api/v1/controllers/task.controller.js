@@ -151,7 +151,7 @@ async function CreateTask(req, res, next) {
                 categoryId: categoryId.id,
                 status: false,
                 days: null,
-                nextDate: req.body.todayDate,
+                nextDate: req.body. taskDate,
                 createdAt: req.body.todayDate,
                 nextInterval: null,
                 repeatTimes: null,
