@@ -18,7 +18,7 @@ export default function serverRoutes(app) {
   //every route implementation
   app.use("/api/v1/user", userRoutes);
   app.use("/api/v1/task", isAuthenticated, taskRoutes);
-  app.use("/api/v1/category", categoryRoutes);
+  app.use("/api/v1/category", isAuthenticated, categoryRoutes);
   app.use("/api/v1/profile", profileRoutes);
   app.use("/api/v1/auth", authRoutes);
   app.use("/api/v1/admin", adminRoutes);

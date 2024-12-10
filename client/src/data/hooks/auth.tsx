@@ -1,10 +1,12 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
-import { LoginInputs } from "../types/loginType";
-import { RegisterInputs } from "../types/registerType";
 import { fetchLogin } from "../services/login";
 import { fetchRegister } from "../services/register";
+
+//types
+import { LoginInputs } from "../types/loginType";
+import { RegisterInputs } from "../types/registerType";
 
 function useLogin() {
 	const [loading, setLoading] = useState(false);

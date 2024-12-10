@@ -1,7 +1,6 @@
 import { useState, ReactNode } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { FaGear } from "react-icons/fa6";
 import { MdDashboard } from "react-icons/md";
 import { FaList } from "react-icons/fa6";
 import { FaPlusCircle } from "react-icons/fa";
@@ -17,10 +16,16 @@ interface NavbarProps {
 
 const Navbar = ({ children }: NavbarProps) => {
 	const [navOpen, setNavOpen] = useState(false);
+	const location = useLocation();
+	const [navSection, setNavSection] = useState(location.pathname.split("/")[1]);
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
 		logout(navigate);
+	};
+
+	const handleNavClick = (section: string) => {
+		setNavSection(section);
 	};
 
 	return (
@@ -38,9 +43,6 @@ const Navbar = ({ children }: NavbarProps) => {
 						</button>
 						<Link to="/">{/*Logo here*/}</Link>
 					</div>
-					<button className="btn-icon">
-						<FaGear />
-					</button>
 				</header>
 				<div className={`nav-bar-drawer ${navOpen ? "nav-open" : ""}`}>
 					<div className="nav-bar-header"></div>
@@ -49,7 +51,15 @@ const Navbar = ({ children }: NavbarProps) => {
 							<h4>Principal</h4>
 							<ul>
 								<li>
-									<Link to="/">
+									<Link
+										to="/"
+										className={
+											navSection === ""
+												? "active"
+												: ""
+										}
+										onClick={() => handleNavClick("")}
+									>
 										<span>
 											<MdDashboard />
 										</span>
@@ -57,7 +67,17 @@ const Navbar = ({ children }: NavbarProps) => {
 									</Link>
 								</li>
 								<li>
-									<Link to="/categories">
+									<Link
+										to="/categories"
+										className={
+											navSection === "categories"
+												? "active"
+												: ""
+										}
+										onClick={() =>
+											handleNavClick("categories")
+										}
+									>
 										<span>
 											<FaList />
 										</span>
@@ -70,7 +90,15 @@ const Navbar = ({ children }: NavbarProps) => {
 							<h4>Ações</h4>
 							<ul>
 								<li>
-									<Link to="/post">
+									<Link
+										to="/post"
+										className={
+											navSection === "post"
+												? "active"
+												: ""
+										}
+										onClick={() => handleNavClick("post")}
+									>
 										<span>
 											<FaPlusCircle />
 										</span>

@@ -31,7 +31,7 @@ async function findById({id, user_id}) {
   });
 }
 
-async function findAll({ user_id }) {
+async function findAll( user_id ) {
   return await prisma.category.findMany({
     where: {
       userId: user_id,
@@ -53,7 +53,7 @@ async function update({ id, name, color }) {
   });
 }
 
-async function remove({ id }) {
+async function remove( id ) {
   return await prisma.category.delete({
     where: {
       id,

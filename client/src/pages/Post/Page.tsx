@@ -1,25 +1,38 @@
 import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import "./style.scss";
+
+//components
 import Button from "../../ui/components/buttons/Button";
 import TextInput from "../../ui/components/inputs/textInput";
 import DateInput from "../../ui/components/inputs/dateInput";
 import Checkbox from "../../ui/components/inputs/checkBoxChange";
+import category from "../../data/hooks/category";
+import Loading from "../../ui/components/loading/Loading";
+import Select from "react-select";
 
+// form input types
 interface FormInputs {
 	title: string;
 	description: string;
 	taskDate: string;
 	taskHour: string;
+	notes: string;
+	category: { value: string; label: string };
+	days: number[];
 }
 
 function Page() {
+	const { categories, loading } = category.useCategory();
 	const [formType, setFormType] = useState(true);
+	const [repFinalDate, setRepFinalDate] = useState<boolean>(true);
 	const [checkedDays, setCheckedDays] = useState<number[]>([]);
 	const {
 		register,
 		handleSubmit,
 		watch,
+		control,
+		setValue,
 		formState: { errors },
 	} = useForm<FormInputs>({
 		mode: "onBlur",
@@ -47,13 +60,19 @@ function Page() {
 
 	const onSubmit: SubmitHandler<FormInputs> = (data) => {
 		console.log(data);
+		console.log(checkedDays);
 	};
 
 	const handleCheckboxChange = (id: number, checked: boolean) => {
 		setCheckedDays((prev) =>
-		  checked ? [...prev, id] : prev.filter((dayId) => dayId !== id)
+			checked ? [...prev, id] : prev.filter((dayId) => dayId !== id)
 		);
-	  };
+		setValue("days", checkedDays);
+	};
+
+	if (loading) {
+		return <Loading/>;
+	}
 	console.log(checkedDays);
 
 	return (
@@ -154,17 +173,48 @@ function Page() {
 						<div className="input-container">
 							<label htmlFor="">Repetir</label>
 							<div className="week-days">
-								<Checkbox id={1} label="Dom" size={40} color="#2d528f" onChange={handleCheckboxChange} />
-								<Checkbox id={2} label="Seg" size={40} color="#2d528f" onChange={handleCheckboxChange} />
-								<Checkbox id={3} label="Ter" size={40} color="#2d528f" onChange={handleCheckboxChange} />
-								<Checkbox id={4} label="Qua" size={40} color="#2d528f" onChange={handleCheckboxChange} />
-								<Checkbox id={5} label="Qui" size={40} color="#2d528f" onChange={handleCheckboxChange} />
-								<Checkbox id={6} label="Sex" size={40} color="#2d528f" onChange={handleCheckboxChange} />
-								<Checkbox id={7} label="Sab" size={40} color="#2d528f" onChange={handleCheckboxChange} />
+								{[1, 2, 3, 4, 5, 6, 7].map((day) => (
+                                    <Controller
+                                        key={day}
+                                        name="days"
+                                        control={control}
+										rules={{
+                                            validate: () => checkedDays?.length > 0 || "Selecione pelo menos um dia",
+                                        }}
+                                        render={({}) => (
+                                            <Checkbox
+                                                id={day}
+                                                label={["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"][day - 1]}
+                                                size={40}
+                                                color="#2d528f"
+                                                onChange={(day, checked) => handleCheckboxChange(day, checked)}
+                                            />
+                                        )}
+                                    />
+                                ))}
 							</div>
+							{errors.days && (
+								<span className="error">{errors.days.message}</span>
+							)}
+						</div>
+						<h4>Datas</h4>
+						<div className="form-check form-switch switch-date">
+							<input
+								className="form-check-input"
+								type="checkbox"
+								role="switch"
+								id="flexSwitchCheckDefault"
+								onChange={() => setRepFinalDate(!repFinalDate)}
+							></input>
+							<label
+								className="form-check-label"
+								htmlFor="flexSwitchCheckDefault"
+							>
+								Até eu desativar
+							</label>
 						</div>
 						<div className="input-container date-container">
-							{!formType ? (
+							{!formType && repFinalDate ? (
 								<span
 									className={`date-input ${
 										taskDate ? "has-value" : ""
@@ -199,7 +249,39 @@ function Page() {
 			<div className="other">
 				<div className="input-container">
 					<label htmlFor="">Notas</label>
-					<textarea name="" id="notes"></textarea>
+					<textarea
+						id="notes"
+						{...register("notes", {
+							pattern: {
+								value: /^[A-Za-z0-9 .,!?'"()-]*$/,
+								message:
+									"As notas da Task deve conter apenas letras, números e .,!?()'\"-",
+							},
+						})}
+					></textarea>
+					{errors.notes && (
+						<span className="error">{errors.notes.message}</span>
+					)}
+				</div>
+				<div className="input-container input-select">
+					<label htmlFor="">Categoria</label>
+					<Controller
+                        name="category"
+                        control={control}
+                        rules={{ required: "Categoria é obrigatória" }}
+                        render={({ field }) => (
+                            <Select
+                                {...field}
+                                options={categories.map((category) => ({
+                                    value: category.name,
+                                    label: category.name,
+                                }))}
+                            />
+                        )}
+                    />
+                    {errors.category && (
+                        <span className="error">{errors.category.message}</span>
+                    )}
 				</div>
 				<Button label="Adicionar" type="fill" color="light" />
 			</div>

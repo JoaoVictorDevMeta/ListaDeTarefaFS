@@ -11,8 +11,8 @@ POST {{baseUrl}}/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email": "joaovictorgouveiar@gmail.com",
-    "password": "password2"
+    "email": "jotave@gmail.com",
+    "password": "123456"
 }
 
 ### Register
@@ -77,3 +77,7 @@ Content-Type: application/json
     "maxDate": null, 
     "days": null
 }
+
+### All Category
+GET {{baseUrl}}/api/v1/category/all
+Authorization: bearer {{token}}

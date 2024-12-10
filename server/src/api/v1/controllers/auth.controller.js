@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import Category from "../models/Category.js";
 import { JWT } from "../../../config/constants.js";
 
 export async function login(req, res) {
@@ -48,6 +49,20 @@ export async function register(req, res) {
       email,
       name,
       password: hashedPassword,
+    });
+
+    const defaultCategories = [
+      { name: "Trabalho", color: "#FF0000" },
+      { name: "Estudos", color: "#00FF00" },
+      { name: "Lazer", color: "#0000FF" },
+    ];
+
+    defaultCategories.forEach(async (category) => {
+      await Category.create({
+        name: category.name,
+        color: category.color,
+        user_id: newUser.id,
+      });
     });
 
     const { password: _, ...validUser } = newUser;

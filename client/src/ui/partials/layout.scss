@@ -1,6 +1,6 @@
 header {
 	display: flex;
-	width: 100%;
+	//width: 100%;
 	height: 90px;
 	justify-content: space-between;
 	align-items: center;
@@ -8,13 +8,20 @@ header {
 	position: absolute;
 	left: 0;
 	top: 0;
-	background-color: white;
-	border-bottom: 2px solid #b1b1b1;
+	//background: white;
+	background: none;
+	//border-bottom: 2px solid #b1b1b1;
 	z-index: 100;
+
+	.btn-icon{
+		background-color: rgb(255, 255, 255);
+		color: var(--color-secondary);
+	}
 }
 .app-content {
 	display: flex;
 	height: 100%;
+	background: #343a40;
 }
 main {
 	padding: 0;
@@ -26,12 +33,16 @@ main {
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	background: white;
+	margin: 6px;
+    height: calc(100% - 12px);
+    border-radius: 15px;
 
 	.main-section-header {
 		position: relative;
 		display: flex;
 		width: 100%;
-		min-height: 90px;
+		//min-height: 90px;
 	}
 	section {
 		top: 0;
@@ -49,12 +60,14 @@ main {
 	position: relative;
 	.nav-bar-header {
 		min-height: 90px;
+		background: #343a40;
 	}
 
 	.nav-section {
 		h4 {
 			font-size: 13px;
-			color: #4e4e4e;
+			//color: #4e4e4e;
+			color: rgb(221, 221, 221);
 			font-weight: 900;
 			font-family: var(--redhat);
 			margin: 0;
@@ -65,28 +78,30 @@ main {
 			padding-left: 14px;
 			overflow: hidden;
 		}
-		&:not(:last-child) {
-			border-bottom: 2px solid #b1b1b1;
-		}
+		/*&:not(:last-child) {
+			//border-bottom: 2px solid #b1b1b1;
+		}*/
 	}
 
 	nav {
 		height: 100%;
-		border-right: 2px solid #b1b1b1;
+		//border-right: 2px solid #b1b1b1;
 		transition: 0.4s;
 		ul {
-			background: white;
+			//background: white;
 			position: relative;
 			padding-top: 20px;
 			transition: 0.2s;
 			margin: 0;
-			padding-bottom: 25px;
+			//padding-bottom: 25px;
+			background: #343a40;
 		}
 		li {
 			padding: 0px 10px;
 			position: relative;
 			z-index: 1;
-			background-color: white;
+			//background-color: white;
+			background: #343a40;
 
 			a {
 				display: flex;
@@ -94,6 +109,7 @@ main {
 				align-items: center;
 				border-radius: 10px;
 				transition: 0.2s;
+				color: white;
 
 				span {
 					min-width: 40px;
@@ -110,7 +126,12 @@ main {
 				}
 				&:hover {
 					background-color: #f1f1f1;
+					background-color: #343a40;
 					color: var(--color-secondary);
+				}
+				&.active {
+					background: var(--bs-blue);
+					color: white;
 				}
 			}
 		}
@@ -123,6 +144,7 @@ main {
 			flex-direction: column;
 			align-items: center;
 			padding: 10px;
+			background: #343a40;
 
 			p {
 				white-space: nowrap;
@@ -130,6 +152,7 @@ main {
 				text-align: center;
 				overflow: hidden;
 				transition: 0.2s;
+				color: #f1f1f1ab;
 			}
 
 			button {

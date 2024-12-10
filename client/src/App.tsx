@@ -49,7 +49,7 @@ function App() {
 					}
 				/>
 				<Route
-					path="/singleTask"
+					path="/task/:id"
 					element={
 						<ProtectedRoute>
 							<TaskPage />
