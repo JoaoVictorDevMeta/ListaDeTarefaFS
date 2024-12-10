@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import "./style.scss";
 
@@ -39,6 +39,10 @@ function Page() {
 	});
 	const taskDate = watch("taskDate");
 
+	useEffect(() => {
+		setValue("days", checkedDays);
+	}, [checkedDays]);
+
 	const validateDate = (value: string) => {
 		const selectedDate = new Date(value);
 		const now = new Date();
@@ -60,20 +64,17 @@ function Page() {
 
 	const onSubmit: SubmitHandler<FormInputs> = (data) => {
 		console.log(data);
-		console.log(checkedDays);
 	};
 
 	const handleCheckboxChange = (id: number, checked: boolean) => {
-		setCheckedDays((prev) =>
-			checked ? [...prev, id] : prev.filter((dayId) => dayId !== id)
-		);
-		setValue("days", checkedDays);
+		setCheckedDays((prev) => {
+            return checked ? [...prev, id] : prev.filter((dayId) => dayId !== id);
+        });
 	};
 
 	if (loading) {
 		return <Loading/>;
 	}
-	console.log(checkedDays);
 
 	return (
 		<form
@@ -179,7 +180,7 @@ function Page() {
                                         name="days"
                                         control={control}
 										rules={{
-                                            validate: () => checkedDays?.length > 0 || "Selecione pelo menos um dia",
+                                            validate: () => !formType ? (checkedDays?.length > 0 || "Selecione pelo menos um dia") : undefined,
                                         }}
                                         render={({}) => (
                                             <Checkbox
