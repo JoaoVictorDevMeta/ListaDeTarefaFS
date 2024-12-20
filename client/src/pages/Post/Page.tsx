@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { TaskInputs } from "../../data/types/Task";
+import Tasks from "../../data/hooks/tasks";
 import "./style.scss";
 
 //components
@@ -16,7 +18,9 @@ interface FormInputs {
 	title: string;
 	description: string;
 	taskDate: string;
-	taskHour: string;
+	taskHour?: string;
+	maxDate: string;
+	maxHour?: string;
 	notes: string;
 	category: { value: string; label: string };
 	days: number[];
@@ -24,6 +28,10 @@ interface FormInputs {
 
 function Page() {
 	const { categories, loading } = category.useCategory();
+	const {
+		createTask,
+		loading: creatingLoading,
+	} = Tasks.useCreateTask();
 	const [formType, setFormType] = useState(true);
 	const [repFinalDate, setRepFinalDate] = useState<boolean>(true);
 	const [checkedDays, setCheckedDays] = useState<number[]>([]);
@@ -63,17 +71,46 @@ function Page() {
 	};
 
 	const onSubmit: SubmitHandler<FormInputs> = (data) => {
-		console.log(data);
+		let maxDate, taskDate, days;
+
+		if (formType) {
+			days = null;
+			maxDate = null;
+			taskDate = new Date(`${data.taskDate}T${data.taskHour}`).toISOString();
+		} else {
+			console.log(repFinalDate);
+			days = checkedDays.join(" ");
+			maxDate = repFinalDate
+				? new Date(`${data.maxDate}T${data.maxHour}`).toISOString()
+				: null;
+			taskDate = new Date().toISOString();
+		}
+
+		const sendData: TaskInputs = {
+			title: data.title,
+			description: data.description,
+			notes: data.notes,
+			category: data.category.value,
+			taskDate: taskDate,
+			todayDate: new Date().toISOString(),
+			maxDate,
+			days,
+		};
+
+		console.log(sendData);
+		createTask(sendData);
 	};
 
 	const handleCheckboxChange = (id: number, checked: boolean) => {
 		setCheckedDays((prev) => {
-            return checked ? [...prev, id] : prev.filter((dayId) => dayId !== id);
-        });
+			return checked
+				? [...prev, id]
+				: prev.filter((dayId) => dayId !== id);
+		});
 	};
 
-	if (loading) {
-		return <Loading/>;
+	if (loading || creatingLoading) {
+		return <Loading />;
 	}
 
 	return (
@@ -175,27 +212,48 @@ function Page() {
 							<label htmlFor="">Repetir</label>
 							<div className="week-days">
 								{[1, 2, 3, 4, 5, 6, 7].map((day) => (
-                                    <Controller
-                                        key={day}
-                                        name="days"
-                                        control={control}
+									<Controller
+										key={day}
+										name="days"
+										control={control}
 										rules={{
-                                            validate: () => !formType ? (checkedDays?.length > 0 || "Selecione pelo menos um dia") : undefined,
-                                        }}
-                                        render={({}) => (
-                                            <Checkbox
-                                                id={day}
-                                                label={["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"][day - 1]}
-                                                size={40}
-                                                color="#2d528f"
-                                                onChange={(day, checked) => handleCheckboxChange(day, checked)}
-                                            />
-                                        )}
-                                    />
-                                ))}
+											validate: () =>
+												!formType
+													? checkedDays?.length > 0 ||
+													  "Selecione pelo menos um dia"
+													: undefined,
+										}}
+										render={({}) => (
+											<Checkbox
+												id={day}
+												label={
+													[
+														"Dom",
+														"Seg",
+														"Ter",
+														"Qua",
+														"Qui",
+														"Sex",
+														"Sab",
+													][day - 1]
+												}
+												size={40}
+												color="#2d528f"
+												onChange={(day, checked) =>
+													handleCheckboxChange(
+														day,
+														checked
+													)
+												}
+											/>
+										)}
+									/>
+								))}
 							</div>
 							{errors.days && (
-								<span className="error">{errors.days.message}</span>
+								<span className="error">
+									{errors.days.message}
+								</span>
 							)}
 						</div>
 						<h4>Datas</h4>
@@ -225,7 +283,7 @@ function Page() {
 										tipo="date"
 										name="taskDate"
 										label={<>Data Final</>}
-										registerOp={register("taskDate", {
+										registerOp={register("maxDate", {
 											required: "Data é obrigatória",
 											validate: validateDate,
 										})}
@@ -235,7 +293,7 @@ function Page() {
 										tipo="time"
 										name="taskHour"
 										label={<>Hora</>}
-										registerOp={register("taskHour", {
+										registerOp={register("maxHour", {
 											required: "Hora é obrigatória",
 										})}
 										errors={errors}
@@ -267,22 +325,22 @@ function Page() {
 				<div className="input-container input-select">
 					<label htmlFor="">Categoria</label>
 					<Controller
-                        name="category"
-                        control={control}
-                        rules={{ required: "Categoria é obrigatória" }}
-                        render={({ field }) => (
-                            <Select
-                                {...field}
-                                options={categories.map((category) => ({
-                                    value: category.name,
-                                    label: category.name,
-                                }))}
-                            />
-                        )}
-                    />
-                    {errors.category && (
-                        <span className="error">{errors.category.message}</span>
-                    )}
+						name="category"
+						control={control}
+						rules={{ required: "Categoria é obrigatória" }}
+						render={({ field }) => (
+							<Select
+								{...field}
+								options={categories.map((category) => ({
+									value: category.name,
+									label: category.name,
+								}))}
+							/>
+						)}
+					/>
+					{errors.category && (
+						<span className="error">{errors.category.message}</span>
+					)}
 				</div>
 				<Button label="Adicionar" type="fill" color="light" />
 			</div>

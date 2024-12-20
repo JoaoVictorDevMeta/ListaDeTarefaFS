@@ -1,5 +1,7 @@
 import express from "express";
 import taskController from "../controllers/task.controller.js";
+import { validate } from "../middlewares/validate.js";
+import { taskSchema } from "../validations/taskSchema.js";
 
 const router = express.Router();
 
@@ -23,6 +25,6 @@ router.get("/repeatable", taskController.AllTasksRepeat);
 
 router.patch("/conclue/:taskId", taskController.ConclueTask);
 
-router.post("/create", taskController.CreateTask);
+router.post("/create", validate(taskSchema), taskController.CreateTask);
 
 export default router;

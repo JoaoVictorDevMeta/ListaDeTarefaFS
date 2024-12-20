@@ -18,6 +18,7 @@ function Page() {
 			<div className="dashboard-content">
 				<div className="dashboard-section flex-wrap">
 					<div className="dashboard-card card-large">
+						{/* add refresh button*/}
 						<h4>Próximas tarefas</h4>
 						<CardList tasks={tasks} loading={loading}/>
 					</div>

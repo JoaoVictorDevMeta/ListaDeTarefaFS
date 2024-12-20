@@ -11,8 +11,8 @@ POST {{baseUrl}}/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email": "jotave@gmail.com",
-    "password": "123456"
+    "email": "joaovictorgouveiar@gmail.com",
+    "password": "password2"
 }
 
 ### Register
@@ -39,7 +39,7 @@ GET {{baseUrl}}/api/v1/task/done
 Authorization: bearer {{token}}
 
 ### Specific task
-GET {{baseUrl}}/api/v1/task/select/9
+GET {{baseUrl}}/api/v1/task/select/17
 Authorization: bearer {{token}}
 
 ### Conclue task
@@ -55,7 +55,6 @@ Content-Type: application/json
     "category": "Pessoal",
     "title": "Do homework",
     "description": "Do the homework of the math class",
-    "status": false,
     "taskDate": "2024-12-17T00:18:00.000Z",
     "todayDate": "2024-12-17T00:18:00.000Z",
     "maxDate": "2025-02-17T00:18:00.000Z", 
@@ -71,7 +70,6 @@ Content-Type: application/json
     "category": "Pessoal",
     "title": "Do homework",
     "description": "Do the homework of the math class",
-    "status": false,
     "taskDate": "2025-12-17T00:18:00.000Z",
     "todayDate": "2024-12-17T00:18:00.000Z",
     "maxDate": null, 
