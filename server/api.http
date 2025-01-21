@@ -39,11 +39,11 @@ GET {{baseUrl}}/api/v1/task/done
 Authorization: bearer {{token}}
 
 ### Specific task
-GET {{baseUrl}}/api/v1/task/select/17
+GET {{baseUrl}}/api/v1/task/select/14
 Authorization: bearer {{token}}
 
 ### Conclue task
-PATCH {{baseUrl}}/api/v1/task/conclue/2
+PATCH {{baseUrl}}/api/v1/task/conclue/14
 Authorization: bearer {{token}}
 
 ### Create Task
@@ -55,10 +55,10 @@ Content-Type: application/json
     "category": "Pessoal",
     "title": "Do homework",
     "description": "Do the homework of the math class",
-    "taskDate": "2024-12-17T00:18:00.000Z",
-    "todayDate": "2024-12-17T00:18:00.000Z",
-    "maxDate": "2025-02-17T00:18:00.000Z", 
-    "days": "3 4"
+    "todayDate": "2025-02-01T00:18:00.000Z",
+    "maxDate": "2025-02-10T00:18:00.000Z", 
+    "repeat": true,
+    "days": "1 4"
 }
 
 ### Create Task simple
@@ -70,9 +70,9 @@ Content-Type: application/json
     "category": "Pessoal",
     "title": "Do homework",
     "description": "Do the homework of the math class",
-    "taskDate": "2025-12-17T00:18:00.000Z",
-    "todayDate": "2024-12-17T00:18:00.000Z",
-    "maxDate": null, 
+    "todayDate": "2025-02-01T00:18:00.000Z",
+    "maxDate": "2025-02-10T00:18:00.000Z", 
+    "repeat": false,
     "days": null
 }
 

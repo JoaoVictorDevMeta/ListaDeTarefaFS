@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { TaskInputs } from "../../data/types/Task";
 import Tasks from "../../data/hooks/tasks";
+import { convertInputDate, dateTimezone} from "../../data/utils/convertDate";
 import "./style.scss";
 
 //components
@@ -29,7 +30,7 @@ interface FormInputs {
 function Page() {
 	const { categories, loading } = category.useCategory();
 	const {
-		createTask,
+		//createTask,
 		loading: creatingLoading,
 	} = Tasks.useCreateTask();
 	const [formType, setFormType] = useState(true);
@@ -49,26 +50,7 @@ function Page() {
 
 	useEffect(() => {
 		setValue("days", checkedDays);
-	}, [checkedDays]);
-
-	const validateDate = (value: string) => {
-		const selectedDate = new Date(value);
-		const now = new Date();
-		now.setHours(0, 0, 0, 0);
-
-		const tenYearsFromNow = new Date();
-		tenYearsFromNow.setFullYear(now.getFullYear() + 10);
-
-		if (selectedDate <= now) {
-			return "Essa data já passou, coloque uma data futura";
-		}
-
-		if (selectedDate > tenYearsFromNow) {
-			return "A data de conclusão não pode ser mais de 10 anos após a data atual";
-		}
-
-		return true;
-	};
+	}, [checkedDays, setValue]);
 
 	const onSubmit: SubmitHandler<FormInputs> = (data) => {
 		let maxDate, taskDate, days;
@@ -76,14 +58,14 @@ function Page() {
 		if (formType) {
 			days = null;
 			maxDate = null;
-			taskDate = new Date(`${data.taskDate}T${data.taskHour}`).toISOString();
+			taskDate = convertInputDate(data.taskDate, data.taskHour || "00:00");
 		} else {
 			console.log(repFinalDate);
 			days = checkedDays.join(" ");
 			maxDate = repFinalDate
-				? new Date(`${data.maxDate}T${data.maxHour}`).toISOString()
+				? convertInputDate(data.maxDate, data.maxHour || "00:00")
 				: null;
-			taskDate = new Date().toISOString();
+			taskDate = dateTimezone();
 		}
 
 		const sendData: TaskInputs = {
@@ -92,20 +74,21 @@ function Page() {
 			notes: data.notes,
 			category: data.category.value,
 			taskDate: taskDate,
-			todayDate: new Date().toISOString(),
-			maxDate,
-			days,
+			todayDate: dateTimezone(),
+			maxDate: maxDate,
+			days: days,
 		};
 
 		console.log(sendData);
-		createTask(sendData);
+		//createTask(sendData);
 	};
 
 	const handleCheckboxChange = (id: number, checked: boolean) => {
 		setCheckedDays((prev) => {
-			return checked
+			const updatedDays = checked
 				? [...prev, id]
 				: prev.filter((dayId) => dayId !== id);
+			return updatedDays.sort((a, b) => a - b);
 		});
 	};
 
@@ -189,7 +172,6 @@ function Page() {
 										label={<>Data de conclusão</>}
 										registerOp={register("taskDate", {
 											required: "Data é obrigatória",
-											validate: validateDate,
 										})}
 										errors={errors}
 									/>
@@ -223,7 +205,7 @@ function Page() {
 													  "Selecione pelo menos um dia"
 													: undefined,
 										}}
-										render={({}) => (
+										render={() => (
 											<Checkbox
 												id={day}
 												label={
@@ -285,7 +267,6 @@ function Page() {
 										label={<>Data Final</>}
 										registerOp={register("maxDate", {
 											required: "Data é obrigatória",
-											validate: validateDate,
 										})}
 										errors={errors}
 									/>

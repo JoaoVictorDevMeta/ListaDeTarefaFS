@@ -11,7 +11,7 @@ async function create({ name, user_id, color = "#00000" }) {
 }
 
 async function findByName({name, user_id}) {
-  return await prisma.category.findUnique({
+  return await prisma.category.findFirst({
     where: {
       name,
       userId: user_id,

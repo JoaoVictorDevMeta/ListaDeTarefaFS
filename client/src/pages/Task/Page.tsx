@@ -1,5 +1,5 @@
 import tasks from "../../data/hooks/tasks";
-import { convertDate } from "../../data/utils/convertDate";
+import { convertDate, dateDistance, dateHour } from "../../data/utils/convertDate";
 import "./style.scss";
 
 function Page() {
@@ -33,13 +33,13 @@ function Page() {
 							<span className="placeholder col-2"></span>
 						</p>
 					</>
-				) : (
-					<>
+				) : ( 
+					<> 
 						<h1>{task?.title}</h1>
 						<ul className="small-infos d-flex">
 							<li>
-								<span>Tempo Limite</span>
-								<p>Restam 4 dias</p>
+								<span>Tempo Limite</span>	
+								<p>{dateDistance(task?.nextDate || "", Date.now() || "")}</p>
 							</li>
 							{task?.repeatTimes ? (
 								<li>
@@ -47,12 +47,12 @@ function Page() {
 									<p>{task?.repeatTimes} semanas</p>
 								</li>
 							) : null}
-              {(!task?.status && task?.nextInterval) ? (
-                <li>
-                <span>Proximo Dia</span>
-                <p>{weekDaysMap[task?.nextInterval]}</p>
-              </li>
-              ): null}
+							{!task?.status && task?.nextInterval ? (
+								<li>
+									<span>Proximo Dia</span>
+									<p>{weekDaysMap[task?.nextInterval]}</p>
+								</li>
+							) : null}
 						</ul>
 						<p className="progress-box">
 							<span>
@@ -114,7 +114,9 @@ function Page() {
 										? ""
 										: convertDate(task?.nextDate || "")}
 								</h3>
-								<h3>14:00</h3>
+								<h3>{loading ? "" : 
+										dateHour(task?.nextDate || "")
+									}</h3>
 							</div>
 						</span>
 					</div>
@@ -126,7 +128,9 @@ function Page() {
 						<span className="d-flex">
 							<div className=" item-info">
 								<p>Criado em</p>
-								<p>Atualizado em</p>
+								{task?.createdAt === task?.updatedAt ? null : (
+									<p>Atualizado em</p>
+								)}
 							</div>
 							<div className=" item">
 								<h3>
@@ -138,7 +142,7 @@ function Page() {
 									{loading
 										? ""
 										: task?.createdAt === task?.updatedAt
-										? "..."
+										? null
 										: convertDate(task?.updatedAt || "")}
 								</h3>
 							</div>

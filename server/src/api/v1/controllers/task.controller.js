@@ -1,10 +1,7 @@
 import Task from "../models/Task.js";
 import Category from "../models/Category.js";
 import TaskServices from "../services/Task.services.js";
-import {
-    calculateRepeatTimes,
-    getNextInterval,
-} from "../helpers/calcInterval.js";
+import TaskDateCalc from "../helpers/taskDateCalc.js";
 
 async function AllTasksCurrentUser(req, res, next) {
     try {
@@ -65,33 +62,31 @@ async function ConclueTask(req, res, next) {
 
     try {
         const existTask = await Task.findById(taskId);
+        //task existance 
         if (!existTask || existTask?.userId !== req.userId) {
             return res.status(404).json({ message: "Nenhuma Task encontrada" });
         }
-
+        //task status inst conclued 
         if (existTask.status) {
             return res.status(403).json({ message: "Task ja concluída" });
         }
 
-        let task;
-        if (existTask.days) {
-            task = await TaskServices.completeTaskWithInterval({
-                id: taskId,
-                nextDate: existTask.nextDate,
-                nextInterval: existTask.nextInterval,
-                days: existTask.days,
-                repeatTimes: existTask.repeatTimes,
-            });
-
+        if(!existTask.days || existTask.repeatTimes === 1){
+            const task = await TaskServices.doneTaskNoInterval(taskId);
             return res
                 .status(200)
                 .json({ message: "Task concluída com sucesso", task });
         }
 
-        task = await TaskServices.completeTaskNoInterval(taskId);
-        return res
-            .status(200)
-            .json({ message: "Task concluída com sucesso", task });
+        const taskDateCalc = new TaskDateCalc(existTask.nextDate, existTask.days);
+        const nextInterval = taskDateCalc.getInterval();
+        const nextDate = taskDateCalc.getNextDate(nextInterval);
+        const repeatTimes = existTask.repeatTimes //in case of infite repeat
+            ? existTask.repeatTimes - 1 
+            : existTask.repeatTimes;
+
+        const task = await TaskServices.doneTaskInterval(nextDate, nextInterval, repeatTimes, taskId);
+        return res.status(200).json({ message: "Task concluída com sucesso", task });
     } catch (error) {
         console.log(error);
         next(error);
@@ -99,67 +94,53 @@ async function ConclueTask(req, res, next) {
 }
 
 async function CreateTask(req, res, next) {
-    let data;
+    //let data;
     let repeatTimes = null;
+    let nextInterval = null;
+    let nextDate = req.body.maxDate;
+    const taskDateCalc = new TaskDateCalc(req.body.todayDate, req.body.days);
 
     try {
-        console.log(req.body);
-        const categoryId = await Category.findByName({
+        if (!taskDateCalc.isValidDate(req.body.maxDate)) {
+            return res.status(400).json({ message: "Datas inválidas" });
+        }
+
+        if (req.body.repeat){
+            if (!req.body.days){
+                return res.status(400).json({ message: "Dias inválidos" });
+            }
+
+            // dynamic repeat part
+            repeatTimes = taskDateCalc.calculateRepeatTimes(req.body.maxDate);
+            nextInterval = taskDateCalc.getInterval();
+            nextDate = taskDateCalc.getNextDate(nextInterval)
+        }
+
+        const category = await Category.findByName({
             name: req.body.category,
             user_id: req.userId,
         });
-
-        if (!categoryId) {
+        if (!category.id) {
             return res.status(400).json({ message: "Categoria inválida" });
         }
 
-        if (req.body.days) {
-            if (req.body.maxDate !== "noLimit") {
-                repeatTimes = calculateRepeatTimes(
-                    req.body.todayDate,
-                    req.body.maxDate,
-                    req.body.days
-                );
-            }
-
-            if (repeatTimes === 0) {
-                return res
-                    .status(400)
-                    .json({ message: "Datas de início ou término inválidas" });
-            }
-
-            const nextInterval = getNextInterval(
-                req.body.taskDate,
-                req.body.days
-            );
-
-            data = {
-                title: req.body.title,
-                description: req.body.description,
-                categoryId: categoryId.id,
-                status: false,
-                days: req.body.days,
-                nextDate: req.body.todayDate,
-                createdAt: req.body.todayDate,
-                nextInterval,
-                repeatTimes,
-            };
-        }else {
-            data = {
-                title: req.body.title,
-                description: req.body.description,
-                categoryId: categoryId.id,
-                status: false,
-                days: null,
-                nextDate: req.body. taskDate,
-                createdAt: req.body.todayDate,
-                nextInterval: null,
-                repeatTimes: null,
-            };
-        }
+        const data = {
+            status: false,
+            title: req.body.title,
+            description: req.body.description,
+            createdAt: req.body.todayDate,
+            updatedAt: req.body.todayDate,
+            days: req.body.days,
+            categoryId: category.id,
+            // ---- the dynamic part ----
+            nextDate: nextDate,
+            nextInterval: nextInterval,
+            repeatTimes: repeatTimes,
+        };
 
         const task = await Task.create({ data, user_id: req.userId });
         res.status(200).json(task);
+        //res.send(data);
     } catch (error) {
         console.log(error);
         next(error);
